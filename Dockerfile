@@ -6,5 +6,5 @@ COPY src /usr/app/src
 WORKDIR /usr/app
 RUN mvn clean compile assembly:single
 CMD ["java", "-cp", "target/JavaProjectScraping-1.0-SNAPSHOT-jar-with-dependencies.jar","com.imdbscraper.top250.FirstJavaSpider"]
-VOLUME /usr/app
+
 

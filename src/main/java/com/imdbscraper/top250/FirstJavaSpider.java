@@ -7,6 +7,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -49,6 +51,12 @@ public class FirstJavaSpider {
                 text().trim());
     }
 
+    public static String getDateTime(){
+        var dtFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        var now = LocalDateTime.now();
+        return dtFormat.format(now);
+    }
+
     public static HashMap<String, Object> getEachRow(Element elem){
         HashMap<String, Object> row = new HashMap<>();
         row.put("Serial Number",  getSerialNumber(elem));
@@ -57,6 +65,7 @@ public class FirstJavaSpider {
         row.put("Year", getYear(elem));
         row.put("IMDB Rating", getIMDBRating(elem));
         row.put("Rating Value", getRatingOnly(elem));
+        row.put("Current Date Time", getDateTime());
         return row;
     }
 
@@ -66,7 +75,7 @@ public class FirstJavaSpider {
     }
 
     public static List<HashMap<String, Object>> getAllMovies(Elements body){
-        List<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
+        List<HashMap<String, Object>> rows = new ArrayList<>();
         for(Element elem : body.select("tr")){
             HashMap<String, Object> row = getEachRow(elem);
             rows.add(row);
@@ -82,7 +91,7 @@ public class FirstJavaSpider {
             for (String col : listOfMovies.get(0).keySet()) {
                 schemaBuilder.addColumn(col);
             }
-            schema = schemaBuilder.build().withLineSeparator("\r\n").withHeader();
+            schema = schemaBuilder.build().withLineSeparator("\r").withHeader();
         }
         CsvMapper mapper = new CsvMapper();
         mapper.writer(schema).writeValues(writer).writeAll(listOfMovies);
@@ -106,6 +115,7 @@ public class FirstJavaSpider {
         Elements body = doc.select("tbody.lister-list");
         var rows = getAllMovies(body);
         writeToCsv(path, rows);
+        System.out.println(getDateTime());
 //        System.out.println(body.select("tr").select("td.titleColumn a").eachText());
 //        HashMap<Integer, Movies> rows = new HashMap<>();
 //        for(Element elem : body.select("tr")){
