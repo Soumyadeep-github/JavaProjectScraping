@@ -2,8 +2,8 @@
 FROM sgrio/java:jdk_15_ubuntu
 
 # Update and install maven
-RUN apt-get update 
-RUN apt-get install -y maven
+RUN apt-get update && \
+apt-get install -y maven
 
 # Copy maven xml and app directory to container app
 COPY pom.xml /usr/app/pom.xml

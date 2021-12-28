@@ -24,32 +24,32 @@ import java.util.stream.Collectors;
 public class FirstJavaSpider {
 
     public static String getSerialNumber(Element elem){
-        /**
-        * Get serial number beside the movie
-        * @param jsoup element
+        /*
+         Get serial number beside the movie
+         @param jsoup element
         */
         return elem.select("td.posterColumn span").attr("data-value");
     }
 
     public static String getFilmName(Element elem){
-        /**
-        * Get movie name
-        * @param jsoup element
+        /*
+         Get movie name
+         @param jsoup element
         */
         return elem.select("td.titleColumn a").text();
     }
 
     public static Integer getYear(Element elem){
-        /**
-        * Get year on which the movie was released
-        * @param jsoup element
+        /*
+         Get year on which the movie was released
+         @param jsoup element
         */
         return Integer.parseInt(elem.select("td.titleColumn span").text().
                 replaceAll("[^\\d]",""));
     }
 
     public static String getTopCastMembers(Element elem){
-        /**
+        /*
         * Get the top cast members in this movie
         * @param jsoup element
         */
@@ -58,7 +58,7 @@ public class FirstJavaSpider {
     }
 
     public static String getIMDBRating(Element elem){
-        /**
+        /*
         * Get the entire IMDB rating for the movie 
         * @param jsoup element
         */
@@ -67,7 +67,7 @@ public class FirstJavaSpider {
     }
 
     public static double getRatingOnly(Element elem){
-        /**
+        /*
         * Get only the movie rating out of 10
         * @param jsoup element
         */
@@ -76,7 +76,7 @@ public class FirstJavaSpider {
     }
 
     public static String getDateTime(){
-        /**
+        /*
         * Get current date and time
         * @param jsoup element
         */
@@ -86,7 +86,7 @@ public class FirstJavaSpider {
     }
 
     public static HashMap<String, Object> getEachRow(Element elem){
-        /**
+        /*
         * Create a Hashmap from the elements in each row
         * @param jsoup element
         */
@@ -102,7 +102,7 @@ public class FirstJavaSpider {
     }
 
     public static Document getDocument(String url) throws IOException {
-        /**
+        /*
         * Generate a Jsoup document 
         * @param url
         */
@@ -111,7 +111,7 @@ public class FirstJavaSpider {
     }
 
     public static List<HashMap<String, Object>> getAllMovies(Elements body){
-        /**
+        /*
         * Generate a List or Array of Hashmaps to store all the Movies
         * @param jsoup elements
         */
@@ -125,7 +125,7 @@ public class FirstJavaSpider {
 
     public static void csvWriter(List<HashMap<String, Object>> listOfMovies,
                                  Writer writer) throws IOException {
-        /**
+        /*
         * Logic to write data from List to CSV
         * @param List of Hashmaps
         * @param Writer object
@@ -145,7 +145,7 @@ public class FirstJavaSpider {
 
     public static void writeToCsv(String filePath,
                                   List<HashMap<String, Object>> arrList) throws IOException {
-        /**
+        /*
         * Call the write function to write data from List to CSV
         * @param filePath - path to store CSV
         * @param List of Hashmaps
@@ -159,19 +159,19 @@ public class FirstJavaSpider {
     }
 
     public static void main(String[] args) throws IOException {
-        /**
+        /*
         Executes the entire logic. Scrapes top 250 movies from IMDB and saves it to a CSV file.
         */
         var path = "./getTopMovies.csv";
         final String url = "https://www.imdb.com/chart/top";
-        System.out.println("Scraping started ...")
+        System.out.println("Scraping started ...");
         Document doc = getDocument(url);
         Elements body = doc.select("tbody.lister-list");
         var rows = getAllMovies(body);
-        System.out.println("Scraping ended.")
-        System.out.println("Writing data to CSV file ...")
+        System.out.println("Scraping ended.");
+        System.out.println("Writing data to CSV file ...");
         writeToCsv(path, rows); 
-        System.out.println("Data written and file saved.")
+        System.out.println("Data written and file saved.");
 
         // Will implement ORM and sorting logic.
         /*
